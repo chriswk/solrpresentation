@@ -1,13 +1,11 @@
 !SLIDE
-# Solr Quick Intro #
-
-!SLIDE bullets incremental
 # Solr #
 
-* Apache License
-* Apache Lucene with optimizations
-* Supports Replication and Sharding
-* Scale up and out
+!SLIDE smbullets incremental
+# History #
+* Started out as a CNET internal project
+* Joined Apache in 2006
+* Builds on Lucene to offer more extensive search functionality
 
 !SLIDE bullets incremental
 # solrconfig.xml #
