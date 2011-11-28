@@ -1,4 +1,4 @@
-!SLIDE smbullets incremental
+<!SLIDE smbullets incremental transition=blindx>
 # Lucene #
 * Originally a sourceforge project
 * Joined Apache Jakarta in Sep 2001
@@ -7,7 +7,7 @@
 * Tagline: Lucene is a free (as in free beer) / open source IR library
 * Released under the Apache License
 
-!SLIDE smbullets incremental growx
+<!SLIDE smbullets incremental transition=growx>
 # Ports #
 * PyLucene
 * Ruby
@@ -17,7 +17,7 @@
 * C++
 * PHP
 
-!SLIDE bullets
+<!SLIDE center full-page transition=growy
 # Lucene Index format #
 * reverse / inverted index
 ![Lucene index format (Lucid Imagination)](lucene_index2.jpg)
