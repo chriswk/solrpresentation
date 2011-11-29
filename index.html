@@ -281,8 +281,21 @@ response = solr.get 'select', :params =&gt; {
 :sort =&gt; 'price asc'
 }
 response["response"]["docs"].each{|doc| puts doc["id"]}</code></pre></div>
-</div><div class="slide" data-transition="none"><div class="content" ref="facets/01_facets">
-<h1>facets</h1></div>
+</div><div class="slide" data-transition="none"><div class="content bullets incremental smaller" ref="facets/01_facets">
+<h1>Facet navigation</h1>
+
+<ul>
+<li>Add facet=true&amp;facet.field=field to the url</li>
+<li>Will add a facet section to the query response</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content commandline" ref="facets/02_rangequeries">
+<h1>Range queries</h1>
+
+<ul>
+<li> fieldname:[lowerboundary TO upperboundary]</li>
+</ul>
+</div>
 </div></div>
 
 </body>
