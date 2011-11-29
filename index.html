@@ -131,6 +131,158 @@
 <li>Sharing of features and fixes now happens at a much higher rate</li>
 </ul>
 </div>
+</div><div class="slide" data-transition="none"><div class="content commandline incremental" ref="getting_started/01_getsolr">
+<pre><code><code class="command">$ wget http://apache.uib.no/lucene/solr/3.5.0/apache-solr-3.5.0.tgz</code>
+<code class="command">$ tar zxf apache-solr-3.5.0.tgz</code>
+<code class="command">$ cd apache-solr-3.5.0/example</code>
+<code class="command">$ java -jar start.jar</code>
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content incremental bullets" ref="getting_started/02_solradmin/1">
+<h1>Solr Admin</h1>
+
+<ul>
+<li>Available at http://localhost:8983/solr/admin when started from example folder</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="getting_started/02_solradmin/2">
+<p><img src="./file/getting_started/solradmin.png" width="1100" height="778" alt="Sold Admin"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="getting_started/03_solrwebapp/1">
+<h1>Solritas</h1>
+
+<ul>
+<li>http://localhost:8983/solr/browse</li>
+<li>Bird's eye view of index</li>
+<li>Updates when pushing example docs</li>
+<li>Provides autocomplete and facet examples using VelocityResponseWriter</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="getting_started/03_solrwebapp/2">
+<p><img src="./file/getting_started/solritas.png" width="1085" height="2020" alt="Solritas"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/01_schema">
+<h1>Key elements of schema.xml</h1>
+
+<ul>
+<li>Unique identifier</li>
+<li>Default search field</li>
+<li>Types</li>
+<li>Fields and Dynamic Fields</li>
+<li>Copy Fields</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/02_solrconfig">
+<h1>solrconfig.xml</h1>
+
+<ul>
+<li>Sets defaults for your search index</li>
+<li>Configures warmup searches for cache</li>
+<li>Cache settings</li>
+<li>Replication</li>
+<li>Update chains</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content bullets incremental" ref="indexing/03_indexing/1">
+<h1>Indexing</h1>
+
+<ul>
+<li>XML format</li>
+<li>Curl</li>
+<li>Java client</li>
+<li>Ruby etc</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/2">
+<h1>XML example</h1>
+
+<pre class="sh_xml"><code>&lt;add&gt;
+    &lt;doc&gt;
+        &lt;field name="id"&gt;3007WFP&lt;/field&gt;
+        &lt;field name="name"&gt;Dell Widescreen UltraSharp 3007WFP&lt;/field&gt;
+        &lt;field name="manu"&gt;Dell, Inc.&lt;/field&gt;
+        &lt;field name="cat"&gt;electronics&lt;/field&gt;
+        &lt;field name="cat"&gt;monitor&lt;/field&gt;
+        &lt;field name="features"&gt;30" TFT active matrix LCD, 2560 x 1600, .25mm dot pitch, 700:1 contrast&lt;/field&gt;
+        &lt;field name="includes"&gt;USB cable&lt;/field&gt;
+        &lt;field name="weight"&gt;401.6&lt;/field&gt;
+        &lt;field name="price"&gt;2199&lt;/field&gt;
+        &lt;field name="popularity"&gt;6&lt;/field&gt;
+        &lt;field name="inStock"&gt;true&lt;/field&gt;
+        &lt;!-- Buffalo store --&gt;
+        &lt;field name="store"&gt;43.17614,-90.57341&lt;/field&gt;
+    &lt;/doc&gt;
+&lt;/add&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/3">
+<h1>Java example (SOLRJ)</h1>
+
+<pre class="sh_java"><code>// Construct the document
+SolrInputDocument doc1 = new SolrInputDocument();
+doc1.add("id", 1);
+doc1.add("price", 10.5);
+// Get server
+SolrServer server = new CommonsHttpSolrServer("http://localhost:8983/solr/");
+server.add(doc1);
+server.commit();</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/4">
+<h1>Ruby</h1>
+
+<pre class="sh_ruby"><code>require 'rsolr'
+
+solr = RSolr.connect :url =&gt; 'http://localhost:8983/solr/'
+//A Solr document is simply a hash
+solr.add :id =&gt; 1, :price =&gt; 10.5
+solr.commit</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content commandline incremental" ref="querying/01_curl/1">
+<h1>curl</h1>
+
+<pre><code><code class="command">$ curl http://localhost:8983/solr/select?q=*:*&amp;fl=*&amp;wt=json</code>
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="querying/01_curl/2">
+<pre class="sh_json"><code>{"responseHeader":
+    {"status":0,
+     "QTime":0,
+     "params":
+        {"fl":"*",
+         "wt":"json",
+         "q":"*:*",
+         "rows":"1"
+        }},
+ "response":
+    {"numFound":17,
+     "start":0,
+     "docs":[
+        {"id":"GB18030TEST",
+          "name":"Test with some GB18030 encoded characters",
+          "price":0.0,
+          "inStock":true,
+          "features":["No accents here","&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x529F;&#x80FD;","This is a feature (translated)","&#x8FD9;&#x4EFD;&#x6587;&#x4EF6;&#x662F;&#x5F88;&#x6709;&#x5149;&#x6CFD;","This document is very shiny (translated)"]
+        }
+     ]
+     }
+}</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="querying/02_java">
+<h1>Java query example</h1>
+
+<pre class="sh_java"><code>SolrServer solrServer = getSolrServer();
+// construct query
+SolrQuery query = new SolrQuery();
+query.setQuery("*.*");
+query.addSortField("price", SolrQuery.ORDER.asc);
+//Get query response
+QueryResponse rsp = solrServer.query(query);
+
+//Get documents
+SolrDocumentList docs = rsp.getResults();</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="querying/03_ruby">
+<h1>Ruby query example</h1>
+
+<pre class="sh_ruby"><code>
+solr = RSolr.connect :url =&gt; 'http://localhost:8983/solr'
+response = solr.get 'select', :params =&gt; {
+:q =&gt; '*:*',
+:sort =&gt; 'price asc'
+}
+response["response"]["docs"].each{|doc| puts doc["id"]}</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content" ref="facets/01_facets">
+<h1>facets</h1></div>
 </div></div>
 
 </body>
