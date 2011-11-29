@@ -3,6 +3,7 @@
 
 !SLIDE smbullets incremental
 # History #
+
 * Started out as a CNET internal project
 * Joined Apache in 2006
 * Graduated from incubation status in 2007

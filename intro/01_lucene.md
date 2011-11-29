@@ -1,5 +1,6 @@
 <!SLIDE smbullets incremental>
 # Lucene #
+
 * Originally a sourceforge project
 * Joined Apache Jakarta in Sep 2001
 * Became a top level project in Feb 2005
@@ -9,6 +10,7 @@
 
 <!SLIDE smbullets incremental>
 # Ports #
+
 * PyLucene
 * Ruby
 * Lucene.Net
