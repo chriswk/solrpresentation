@@ -1,4 +1,4 @@
-!SLIDE 
+<!SLIDE>
 # Solr installation #
 
 @@@ shell
