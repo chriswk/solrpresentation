@@ -28,5 +28,28 @@
         </doc>
     </add>
 
+<!SLIDE code smaller>
+# Java example (SOLRJ) #
+
+    @@@ java
+    // Construct the document
+    SolrInputDocument doc1 = new SolrInputDocument();
+    doc1.add("id", 1);
+    doc1.add("price", 10.5);
+    // Get server
+    SolrServer server = new CommonsHttpSolrServer("http://localhost:8983/solr/");
+    server.add(doc1);
+    server.commit();
+
+<!SLIDE code smaller>
+# Ruby #
+
+    @@@ ruby
+    require 'rsolr'
+
+    solr = RSolr.connect :url => 'http://localhost:8983/solr/'
+    //A Solr document is simply a hash
+    solr.add :id => 1, :price => 10.5
+    solr.commit
 
 
