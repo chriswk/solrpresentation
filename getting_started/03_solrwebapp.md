@@ -5,7 +5,7 @@
 * Updates when pushing example docs
 * Provides autocomplete and facet examples using VelocityResponseWriter
 
-<!SLIDE full-screen>
+<!SLIDE full-page>
 ![Solritas](solritas.png)
 
 
