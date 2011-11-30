@@ -158,7 +158,7 @@
 </div>
 </div><div class="slide" data-transition="none"><div class="content full-page" ref="getting_started/03_solrwebapp/2">
 <p><img src="./file/getting_started/solritas.png" width="1085" height="2020" alt="Solritas"/></p></div>
-</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/01_schema">
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/01_schema/1">
 <h1>Key elements of schema.xml</h1>
 
 <ul>
@@ -169,7 +169,58 @@
 <li>Copy Fields</li>
 </ul>
 </div>
-</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/02_solrconfig">
+</div><div class="slide" data-transition="none"><div class="content code incremental smaller" ref="indexing/01_schema/2">
+<pre class="sh_xml"><code>&lt;?xml version="1.0" encoding="UTF-8"&gt;
+&lt;schema name="example" version="3.5"&gt;
+    &lt;uniqueKey&gt;id&lt;/uniqueKey&gt;
+    &lt;defaultSearchField&gt;text&lt;/defaultSearchField&gt;
+    &lt;solrQueryParser defaultOperator="OR" /&gt;
+    &lt;types&gt;
+    &lt;/types&gt;
+    &lt;fields&gt;
+    &lt;/fields&gt;
+&lt;/schema&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental smaller" ref="indexing/01_schema/3">
+<h1>Types</h1>
+
+<ul>
+<li>Not going to say too much</li>
+<li>But custom types gives lots of power to SOLR</li>
+<li>PatternReplaceFilters</li>
+<li>Analyzers</li>
+<li>Indexing time</li>
+<li>Search time</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/01_schema/4">
+<pre class="sh_xml"><code>&lt;fieldType name="text_ws"
+    class="solr.TextField"
+    positionIncrementGap="100"&gt;
+    &lt;analyzer&gt;
+        &lt;tokenizer class="solr.WhiteSpaceTokenizerFactory" /&gt;
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/01_schema/5">
+<pre class="sh_xml"><code>&lt;fieldType name="text_general" class="solr.TextField" positionIncrementGap="100"&gt;
+    &lt;analyzer type="index"&gt;
+        &lt;tokenizer class="solr.StandardTokenizerFactory" /&gt;
+        &lt;filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="true" /&gt;
+        &lt;filter class="solr.LowerCaseFilterFactory" /&gt;
+    &lt;/analyzer&gt;
+    &lt;analyzer type="search"&gt;
+
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="indexing/01_schema/6">
+<h1>Fields</h1>
+
+<ul>
+<li>Defines the fields solr knows about</li>
+<li>Only defines the outer boundaries</li>
+<li>A Document does not need to contain all fields defined</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content smbullets smaller incremental" ref="indexing/02_solrconfig/1">
 <h1>solrconfig.xml</h1>
 
 <ul>
@@ -178,8 +229,26 @@
 <li>Cache settings</li>
 <li>Replication</li>
 <li>Update chains</li>
+<li>Query handlers</li>
+<li>Caching</li>
 </ul>
 </div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/02_solrconfig/2">
+<p class="notes">Remember to comment on the directoryFactory and it's relevance, MMap, NIOFS, SimpleFS</p>
+
+<pre class="sh_xml"><code>&lt;config&gt;
+&lt;luceneMatchVersion&gt;LUCENE_35&lt;/luceneMatchVersion&gt;
+&lt;dataDir&gt;&lt;!-- Location of index files relative to contextpath --&gt;&lt;/dataDir&gt;
+&lt;directoryFactory /&gt;
+&lt;indexDefaults&gt;
+    &lt;useCompoundFile&gt;false&lt;/useCompoundFile&gt;
+    &lt;mergeFactor&gt;10&lt;/mergeFactory&gt;
+    &lt;ramBuffer /&gt;
+&lt;/indexDefaults&gt;
+&lt;jmx /&gt;
+&lt;updateHandler class="solr.DirectUpdateHandler2"&gt;
+&lt;query /&gt;
+&lt;/config&gt;</code></pre></div>
 </div><div class="slide" data-transition="none"><div class="content bullets incremental" ref="indexing/03_indexing/1">
 <h1>Indexing</h1>
 
@@ -210,7 +279,14 @@
         &lt;field name="store"&gt;43.17614,-90.57341&lt;/field&gt;
     &lt;/doc&gt;
 &lt;/add&gt;</code></pre></div>
-</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/3">
+</div><div class="slide" data-transition="none"><div class="content commandline incremental smaller" ref="indexing/03_indexing/3">
+<h1>CURL example</h1>
+
+<pre><code><code class="command">$ curl http://localhost:8983/solr/update?commit=true -H "Content-Type: text/xml" \
+--data-binary '&lt;add&gt;&lt;doc&gt;&lt;field name="id"&gt;testdoc&lt;/field&gt; \
+&lt;field name="price"&gt;10.95&lt;/field&gt;&lt;/doc&gt;&lt;/add&gt;'</code>
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/4">
 <h1>Java example (SOLRJ)</h1>
 
 <pre class="sh_java"><code>// Construct the document
@@ -221,7 +297,7 @@ doc1.add("price", 10.5);
 SolrServer server = new CommonsHttpSolrServer("http://localhost:8983/solr/");
 server.add(doc1);
 server.commit();</code></pre></div>
-</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/4">
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="indexing/03_indexing/5">
 <h1>Ruby</h1>
 
 <pre class="sh_ruby"><code>require 'rsolr'
@@ -296,6 +372,46 @@ response["response"]["docs"].each{|doc| puts doc["id"]}</code></pre></div>
 <li> fieldname:[lowerboundary TO upperboundary]</li>
 </ul>
 </div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental" ref="scaling/01_replication/1">
+<h1>Replication</h1>
+
+<ul>
+<li>Master / Slave setup</li>
+<li>Easy setup. &lt;10 lines for each replicator</li>
+<li>Secondary masters also possible</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="scaling/01_replication/2">
+<h1>Master xml</h1>
+
+<pre class="sh_xml"><code>&lt;requestHandler name="/replication" class="solr.ReplicationHandler"&gt;
+    &lt;lst name="master"&gt;
+        &lt;str name="replicateAfter"&gt;startup&lt;/str&gt;
+        &lt;str name="replicateAfter"&gt;commit&lt;/str&gt;
+        &lt;str name="confFiles"&gt;schema.xml,stopwords.txt&lt;/str&gt;
+    &lt;/lst&gt;
+&lt;/requestHandler&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content code smaller" ref="scaling/01_replication/3">
+<h1>Slave xml</h1>
+
+<pre class="sh_xml"><code>&lt;requestHandler name="/replication" class="solr.ReplicationHandler"&gt;
+    &lt;lst name="slave"&gt;
+        &lt;str name="masterUrl"&gt;http://${solr.master.address:localhost}:${solr.master.port:8983}/solr/replication&lt;/str&gt;
+        &lt;str name="pollInterval"&gt;00:00:60&lt;/str&gt;
+    &lt;/lst&gt;
+&lt;/requestHandler&gt;</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content smbullets incremental smaller" ref="scaling/02_sharding">
+<h1>Sharding</h1>
+
+<ul>
+<li>aka Distributed searching in SOLR</li>
+<li>Supported by
+  ** Query, Facets, Highlighting, Stats, Spellcheck, Terms, Term Vector and Debug</li>
+<li>Add a comma separated list of urls to the shards to your url in the shard parameter</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content" ref="scaling/03_zookeeper">
+<h1>zookeeper</h1></div>
 </div></div>
 
 </body>
