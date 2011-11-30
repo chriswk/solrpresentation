@@ -28,6 +28,14 @@
         </doc>
     </add>
 
+<!SLIDE commandline incremental smaller>
+# CURL example #
+
+    $ curl http://localhost:8983/solr/update?commit=true -H "Content-Type: text/xml" \
+    --data-binary '<add><doc><field name="id">testdoc</field> \
+    <field name="price">10.95</field></doc></add>'
+
+
 <!SLIDE code smaller>
 # Java example (SOLRJ) #
 
