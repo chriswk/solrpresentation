@@ -4,7 +4,7 @@
     $ curl http://localhost:8983/solr/select?q=*:*&fl=*&wt=json
 <!SLIDE code smaller>
 
-    @@@ json
+    @@@ javascript
     {"responseHeader":
         {"status":0,
          "QTime":0,
