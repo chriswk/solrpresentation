@@ -19,6 +19,6 @@
 * C++
 * PHP
 
-<!SLIDE center full-page>
+<!SLIDE center>
 # Index format
 ![Lucene index format (Lucid Imagination)](lucene_index2.jpg)
